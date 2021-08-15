@@ -13,7 +13,7 @@ public class DBConnection {
     private DBConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "prasad");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/dep7", "root", "prasad");
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {

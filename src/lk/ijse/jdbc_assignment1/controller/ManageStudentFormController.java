@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.jdbc_assignment1.tm.StudentTM;
+import lk.ijse.jdbc_assignment1.util.DBConnection;
 
 import java.io.IOException;
 import java.sql.*;
@@ -105,26 +106,16 @@ public class ManageStudentFormController {
         });
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/dep7", "root", "prasad");
+
+            connection = DBConnection.getInstance().getConnection();
             pstmSaveStudent = connection.prepareStatement("INSERT INTO student (name) VALUES (?);", Statement.RETURN_GENERATED_KEYS);
             pstmSaveContact = connection.prepareStatement("INSERT INTO contact (contact, student_id) VALUES (?,?);");
             pstmDeleteStudent = connection.prepareStatement("DELETE FROM student WHERE id=?");
             pstmDeleteContacts = connection.prepareStatement("DELETE FROM contact WHERE student_id=?");
             pstmSelectContacts = connection.prepareStatement("SELECT * FROM contact WHERE student_id=?");
 
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 
-                try {
-
-                    if (connection.isClosed()) {
-                        connection.close();
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }));
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
